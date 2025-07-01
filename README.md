@@ -181,13 +181,6 @@ The Express.js backend can be deployed to:
 - **Render**
 - **DigitalOcean App Platform**
 
-## 🔒 Security
-
-- **Authentication**: Managed by Supabase Auth
-- **Authorization**: Row Level Security (RLS) policies
-- **Data Protection**: HTTPS enforced, secure API keys
-- **Input Validation**: Client and server-side validation
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -216,20 +209,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **"Build errors"**
 - Run `npm install` to ensure all dependencies are installed
 - Check Node.js version (requires v16+)
-
-### Need Help?
-
-- 📧 **Email**: [Your email here]
-- 🐛 **Issues**: [GitHub Issues](https://github.com/azrabano23/cad-editor-react-website/issues)
-- 📖 **Documentation**: [Supabase Docs](https://supabase.com/docs)
-
-## 🙏 Acknowledgments
-
-- **React Team** for the amazing framework
-- **Supabase** for the backend-as-a-service platform
-- **Create React App** for the project boilerplate
-- **PostGIS** for geometric operations
-
----
-
-**Built with ❤️ using React, TypeScript, and Supabase**
