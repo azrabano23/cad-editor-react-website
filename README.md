@@ -1,8 +1,18 @@
-# CAD Editor React Website with Supabase Integration
+# HoloDraft - AR CAD Editor 🥽
 
-🎨 **A modern, web-based CAD (Computer-Aided Design) editor built with React, TypeScript, and Supabase**
+**Transform your CAD files into immersive AR experiences using MetaQuest technology.**
 
-This project provides a comprehensive CAD editor application with real-time collaboration, user authentication, project management, and cloud storage capabilities.
+HoloDraft is a revolutionary CAD editor that bridges traditional design software with cutting-edge Augmented Reality. Upload your CAD files, convert them to AR-ready formats, and experience your 3D models in real space using MetaQuest devices.
+
+## 🚀 New: Unity AR Integration
+
+**Just Added:** Complete Unity integration for MetaQuest AR viewing and editing!
+
+- 🥽 **MetaQuest AR Support** - View and edit CAD models in augmented reality
+- 🌐 **Unity WebGL Viewer** - 3D model viewing directly in the browser
+- 🤝 **Real-time Collaboration** - Multiple users can edit models simultaneously
+- ✋ **Hand Tracking** - Natural gesture controls for model manipulation
+- 🔄 **Live Synchronization** - Changes sync instantly across all platforms
 
 ## 🚀 Features
 
@@ -122,6 +132,62 @@ cd backend
 node server.js
 ```
 The API server will run at [http://localhost:5000](http://localhost:5000)
+
+## 🥽 Unity AR Integration
+
+**NEW:** HoloDraft now supports Unity integration for MetaQuest AR experiences!
+
+### What's Included
+
+- **Unity WebGL Viewer** - 3D model viewing directly in your web browser
+- **MetaQuest AR App** - Standalone AR application for immersive CAD editing
+- **Real-time Synchronization** - Live collaboration between web and AR users
+- **Hand Tracking** - Natural gesture controls for model manipulation
+- **Material Editing** - Modify colors, textures, and properties in real-time
+- **Export Tools** - Save modified models back to your project
+
+### Quick Start for Unity Integration
+
+1. **Follow the complete setup guide:**
+   ```bash
+   # Open the comprehensive Unity setup guide
+   open UNITY_SETUP.md
+   ```
+
+2. **Directory structure for Unity:**
+   ```
+   unity-integration/
+   ├── Scripts/
+   │   ├── WebGL/          # Unity WebGL scripts
+   │   ├── AR/             # MetaQuest AR scripts
+   │   └── Shared/         # Common utilities
+   ├── React/              # React integration components
+   └── README.md           # Unity-specific documentation
+   ```
+
+3. **Prerequisites for AR development:**
+   - Unity 2022.3 LTS or later
+   - MetaQuest 2 or 3 device
+   - Meta Developer Account
+   - Unity WebGL Build Support
+   - Oculus Integration package
+
+### Features in Action
+
+- **🌐 Web Viewer**: Click the "🥽 View in Unity" button on any converted CAD file
+- **🥽 AR Session**: Start AR sessions from the web app, connect with MetaQuest
+- **✋ Hand Controls**: Use pinch gestures to select and manipulate 3D models
+- **🎨 Live Editing**: Material and transform changes sync across all connected devices
+- **🤝 Collaboration**: Multiple users can edit the same model simultaneously
+
+### Development Workflow
+
+1. **Web Development**: Upload and convert CAD files in React app
+2. **Unity WebGL**: Test 3D viewing and basic interactions
+3. **AR Development**: Build and deploy to MetaQuest for immersive editing
+4. **Live Testing**: Verify real-time sync between all platforms
+
+> **📚 Full Documentation**: See `UNITY_SETUP.md` for complete setup instructions, troubleshooting, and advanced features.
 
 ## 🗄️ Database Schema
 
