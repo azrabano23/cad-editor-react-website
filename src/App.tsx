@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './App.css';
 import SupabaseTest from './components/SupabaseTest';
+import UnityCADViewer from './components/UnityCADViewer';
 
 interface UploadedFile {
   name: string;
