@@ -6,6 +6,292 @@ HoloDraft is a revolutionary web-based CAD editor that transforms traditional 3D
 
 ![HoloDraft Banner](https://img.shields.io/badge/HoloDraft-AR%20CAD%20Editor-blue?style=for-the-badge&logo=unity)
 
+## 🎯 Problem Statement
+
+Traditional CAD software faces significant limitations in the modern design workflow:
+
+- **🖥️ Desktop Limitations**: CAD tools are confined to 2D screens, making it difficult to understand complex 3D geometries
+- **💸 High Cost**: Professional CAD software licenses are expensive and require specialized training
+- **🔒 Platform Lock-in**: Most CAD tools are tied to specific operating systems and hardware
+- **👥 Poor Collaboration**: Sharing 3D models for review requires everyone to have the same expensive software
+- **🎯 Spatial Understanding**: Engineers struggle to visualize how designs will look and function in real-world environments
+- **📱 Limited Accessibility**: CAD tools aren't accessible on mobile devices or through web browsers
+
+## 💡 Our Solution
+
+HoloDraft solves these problems by bringing CAD design into the web and augmented reality:
+
+### **🌐 Web-First Approach**
+- **Universal Access**: Works on any device with a web browser - no expensive software licenses
+- **Real-time Collaboration**: Multiple users can view and interact with models simultaneously
+- **Cross-Platform**: Supports Windows, macOS, Linux, and mobile devices
+
+### **🥽 AR Visualization**
+- **Spatial Understanding**: See how designs fit in real-world environments
+- **Natural Interaction**: Use hand gestures to manipulate 3D models intuitively
+- **Immersive Review**: Walk around and inside your designs in augmented reality
+
+### **🔄 Seamless Workflow**
+- **Format Flexibility**: Import STL, STEP, OBJ, PLY, and DAE files
+- **Automatic Conversion**: Backend processes convert models to AR-ready formats
+- **Instant Sharing**: Share models via simple web links
+
+## 🛠️ How Users Experience HoloDraft
+
+### **For Design Engineers**
+1. **Upload** your CAD file (STL, STEP, etc.) through the web interface
+2. **Convert** automatically to AR-ready FBX format using our Blender backend
+3. **Review** in the web-based 3D viewer with measurement tools
+4. **Experience** in AR using MetaQuest - grab, scale, and annotate with hand gestures
+5. **Collaborate** by sharing the web link with stakeholders
+
+### **For Design Review Teams**
+1. **Access** shared model through web browser - no software installation
+2. **Measure** distances, angles, and calculate volumes directly in the browser
+3. **Annotate** with 3D text labels and notes
+4. **Visualize** in AR to understand spatial relationships
+5. **Provide Feedback** through integrated collaboration tools
+
+### **For Clients & Stakeholders**
+1. **View** 3D models instantly through web browser
+2. **Interact** with models using simple mouse/touch controls
+3. **Experience** in AR using smartphone or MetaQuest device
+4. **Understand** designs better through immersive visualization
+
+## 🏗️ Technology Stack & Architecture
+
+### **Why We Chose Each Technology**
+
+#### **Frontend - React + TypeScript**
+- **React**: Component-based architecture for maintainable UI
+- **TypeScript**: Type safety prevents runtime errors and improves developer experience
+- **CSS**: Responsive design for cross-device compatibility
+- **HTML**: Semantic markup for accessibility
+
+#### **Backend - Node.js + Express**
+- **Node.js**: JavaScript runtime allows full-stack JavaScript development
+- **Express**: Lightweight web framework for REST API development
+- **Python**: Blender automation scripts for 3D file conversion
+- **C**: Unity native plugins for performance-critical operations
+
+#### **Database - PostgreSQL (Supabase)**
+- **PostgreSQL**: Reliable relational database with excellent performance
+- **PL/pgSQL**: Stored procedures for complex database operations
+- **Supabase**: Provides real-time subscriptions and authentication
+
+#### **3D Engine - Unity + C#**
+- **Unity**: Industry-standard 3D engine with excellent WebGL support
+- **C#**: Type-safe, object-oriented language for game development
+- **MRTK**: Microsoft Mixed Reality Toolkit for AR interactions
+
+#### **File Processing - Blender + Python**
+- **Blender**: Open-source 3D software with robust file format support
+- **Python**: Blender's scripting language for automation
+
+### **System Design Overview**
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                                HOLODRAFT SYSTEM                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   FRONTEND      │    │    BACKEND      │    │   PROCESSING    │    │   AR VIEWER     │
+│   (Web App)     │    │   (API Server)  │    │   (Blender)     │    │   (Unity)       │
+│                 │    │                 │    │                 │    │                 │
+│ React/TypeScript│◄──►│ Node.js/Express │◄──►│ Python Scripts  │◄──►│ C# Scripts      │
+│ HTML/CSS/JS     │    │ REST API        │    │ STL→FBX Convert │    │ WebGL/AR Build  │
+│                 │    │                 │    │                 │    │                 │
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │                       │
+         │                       │                       │                       │
+         ▼                       ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   SUPABASE      │    │   FILE STORAGE  │    │   TEMP STORAGE  │    │   METAQUEST     │
+│   (Database)    │    │   (Uploads)     │    │   (Conversion)  │    │   (AR Device)   │
+│                 │    │                 │    │                 │    │                 │
+│ PostgreSQL      │    │ Static Files    │    │ Processing      │    │ Hand Tracking   │
+│ PL/pgSQL        │    │ Multer Storage  │    │ Temp Files      │    │ Spatial Mapping │
+│                 │    │                 │    │                 │    │                 │
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+## 🔧 How the Backend Works
+
+### **File Upload Process**
+1. **Frontend** (React/TypeScript) sends file via HTTP POST
+2. **Express Server** receives file using Multer middleware
+3. **File Validation** checks format, size, and security
+4. **Database Storage** saves file metadata in PostgreSQL
+5. **Response** returns file ID and upload confirmation
+
+### **File Conversion Pipeline**
+1. **Conversion Request** triggered by frontend
+2. **Python Script** launches Blender in headless mode
+3. **Blender Processing** loads STL and exports as FBX
+4. **Unity Optimization** processes FBX for WebGL/AR
+5. **Database Update** marks conversion complete
+6. **Notification** sent to frontend via WebSocket
+
+### **AR Model Loading**
+1. **Unity WebGL** receives model data from React
+2. **Asset Loading** downloads FBX from backend
+3. **Model Instantiation** creates 3D object in Unity scene
+4. **MRTK Integration** adds hand tracking and interaction
+5. **AR Session** starts with spatial mapping
+
+```javascript
+// Backend API Flow (Node.js/Express)
+app.post('/api/upload', upload.single('file'), async (req, res) => {
+  // 1. Validate file
+  const validation = validateCADFile(req.file);
+  
+  // 2. Save to database
+  const { data } = await supabase.from('files').insert({
+    filename: req.file.filename,
+    original_name: req.file.originalname,
+    file_path: req.file.path,
+    file_size: req.file.size
+  });
+  
+  // 3. Return response
+  res.json({ success: true, file: data });
+});
+
+app.post('/api/convert/:id', async (req, res) => {
+  // 1. Get file info
+  const file = await getFileById(req.params.id);
+  
+  // 2. Run Python/Blender conversion
+  const convertedPath = await runBlenderConversion(file.file_path);
+  
+  // 3. Update database
+  await supabase.from('files').update({
+    converted_path: convertedPath,
+    status: 'converted'
+  }).eq('id', req.params.id);
+  
+  res.json({ success: true, convertedUrl: convertedPath });
+});
+```
+
+## 🎨 How the Frontend Works
+
+### **React Component Architecture**
+```typescript
+// Main App Component (TypeScript/React)
+import React, { useState, useEffect } from 'react';
+import { supabase } from './lib/supabaseClient';
+import UnityCADViewer from './components/UnityCADViewer';
+import FileUpload from './components/FileUpload';
+
+const App: React.FC = () => {
+  const [files, setFiles] = useState<CADFile[]>([]);
+  const [selectedFile, setSelectedFile] = useState<CADFile | null>(null);
+  
+  // Real-time file updates from Supabase
+  useEffect(() => {
+    const subscription = supabase
+      .channel('files')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'files' }, 
+        (payload) => {
+          updateFileList(payload);
+        })
+      .subscribe();
+    
+    return () => subscription.unsubscribe();
+  }, []);
+  
+  const handleFileUpload = async (file: File) => {
+    // 1. Upload to backend
+    const uploadResponse = await uploadFile(file);
+    
+    // 2. Trigger conversion
+    const conversionResponse = await convertFile(uploadResponse.file.id);
+    
+    // 3. Update UI
+    setFiles(prev => [...prev, uploadResponse.file]);
+  };
+  
+  const handleARView = (file: CADFile) => {
+    // Load model in Unity AR viewer
+    window.unityBridge?.loadModel({
+      fileId: file.id,
+      fileName: file.filename,
+      downloadUrl: file.converted_path
+    });
+  };
+  
+  return (
+    <div className="app">
+      <FileUpload onUpload={handleFileUpload} />
+      <FileList files={files} onSelect={setSelectedFile} />
+      {selectedFile && (
+        <UnityCADViewer 
+          file={selectedFile} 
+          onARView={handleARView}
+        />
+      )}
+    </div>
+  );
+};
+```
+
+### **Unity Integration Bridge**
+```javascript
+// Unity-React Communication Bridge
+window.unityBridge = {
+  // Send data to Unity
+  loadModel: (modelData) => {
+    if (window.unityInstance) {
+      window.unityInstance.SendMessage('CADModelManager', 'LoadModel', 
+        JSON.stringify(modelData));
+    }
+  },
+  
+  // Receive data from Unity
+  onModelLoaded: (modelInfo) => {
+    console.log('Model loaded in Unity:', modelInfo);
+    // Update React UI
+    window.dispatchEvent(new CustomEvent('unityModelLoaded', { 
+      detail: modelInfo 
+    }));
+  },
+  
+  // AR Session Management
+  startARSession: (config) => {
+    window.unityInstance.SendMessage('ARManager', 'StartARSession', 
+      JSON.stringify(config));
+  }
+};
+```
+
+## 💼 Value Proposition
+
+### **For Individual Engineers**
+- **Cost Savings**: No expensive CAD software licenses (save $1,000s annually)
+- **Accessibility**: Work from anywhere with just a web browser
+- **Better Visualization**: See designs in real-world context through AR
+- **Faster Iteration**: Instant sharing and feedback cycles
+
+### **For Engineering Teams**
+- **Improved Collaboration**: Real-time model sharing and review
+- **Reduced Training**: Intuitive web interface requires minimal learning
+- **Cross-Platform**: Works on Windows, Mac, Linux, and mobile
+- **Version Control**: Automatic model versioning and history
+
+### **For Organizations**
+- **Lower TCO**: Reduce software licensing and IT maintenance costs
+- **Faster Time-to-Market**: Streamlined design review process
+- **Better Client Communication**: Stakeholders can view models without CAD software
+- **Remote Work Ready**: Fully cloud-based, supports distributed teams
+
+### **Technical Advantages**
+- **Modern Web Standards**: Built with latest React, TypeScript, and WebGL
+- **Scalable Architecture**: Microservices design supports growth
+- **Open Source Integration**: Leverages Blender and Unity ecosystem
+- **Future-Proof**: AR/VR ready for next-generation interfaces
+
 ## 🚀 Features
 
 ### ✨ **Core Functionality**
