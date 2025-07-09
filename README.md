@@ -1,277 +1,375 @@
-# HoloDraft - AR CAD Editor 🥽
+# HoloDraft - AR CAD Editor
 
-**Transform your CAD files into immersive AR experiences using MetaQuest technology.**
+🥽 **The Future of CAD Design in Augmented Reality**
 
-HoloDraft is a revolutionary CAD editor that bridges traditional design software with cutting-edge Augmented Reality. Upload your CAD files, convert them to AR-ready formats, and experience your 3D models in real space using MetaQuest devices.
+HoloDraft is a revolutionary web-based CAD editor that transforms traditional 3D models into immersive AR experiences. Upload your CAD files, convert them to AR-ready formats, and visualize them in augmented reality using MetaQuest devices.
 
-## 🚀 New: Unity AR Integration
-
-**Just Added:** Complete Unity integration for MetaQuest AR viewing and editing!
-
-- 🥽 **MetaQuest AR Support** - View and edit CAD models in augmented reality
-- 🌐 **Unity WebGL Viewer** - 3D model viewing directly in the browser
-- 🤝 **Real-time Collaboration** - Multiple users can edit models simultaneously
-- ✋ **Hand Tracking** - Natural gesture controls for model manipulation
-- 🔄 **Live Synchronization** - Changes sync instantly across all platforms
+![HoloDraft Banner](https://img.shields.io/badge/HoloDraft-AR%20CAD%20Editor-blue?style=for-the-badge&logo=unity)
 
 ## 🚀 Features
 
-- **🎯 Modern CAD Editor Interface** - Clean, intuitive design for creating and editing CAD drawings
-- **👥 User Authentication** - Secure login/signup with Supabase Auth
-- **☁️ Cloud Storage** - All projects stored securely in Supabase PostgreSQL database
-- **🤝 Real-time Collaboration** - Multiple users can work on projects simultaneously
-- **📚 Project Management** - Create, save, load, and organize CAD projects
-- **🎨 Layer Management** - Organize drawing elements into layers with customizable properties
-- **📏 Drawing Tools** - Support for lines, circles, rectangles, polygons, text, and dimensions
-- **📋 Version Control** - Track project history and restore previous versions
-- **🔒 Row-Level Security** - Secure data access with Supabase RLS policies
-- **⚡ Performance Optimized** - Efficient database queries with proper indexing
+### ✨ **Core Functionality**
+- **📤 Multi-format Upload**: Support for STL, STEP, OBJ, PLY, and DAE files
+- **🔄 Real-time Conversion**: Automatic STL to FBX conversion using Blender
+- **🎮 Unity WebGL Viewer**: Interactive 3D model viewer in the browser
+- **🥽 MetaQuest AR Integration**: Full AR experience with hand tracking
+- **🎨 Material Editor**: Real-time material and texture editing
+- **📐 Transform Controls**: Precise positioning, rotation, and scaling
+
+### 🛠️ **Technical Stack**
+- **Frontend**: React 19 + TypeScript + Supabase
+- **Backend**: Node.js + Express + Multer
+- **3D Engine**: Unity 2022.3+ with Mixed Reality Toolkit
+- **AR Platform**: MetaQuest 2/3 with hand tracking
+- **Conversion**: Blender 4.4+ Python API
+- **Database**: Supabase (PostgreSQL)
 
 ## 🏗️ Architecture
 
-- **Frontend**: React 18 + TypeScript + CSS3
-- **Backend**: Supabase (PostgreSQL + Auth + Real-time)
-- **API Server**: Express.js (for additional endpoints)
-- **Database**: PostgreSQL with PostGIS for geometric operations
-- **Authentication**: Supabase Auth with RLS policies
-- **Styling**: Modern CSS with responsive design
-
-## 📁 Project Structure
-
 ```
-cad-editor-react-website/
-├── src/
-│   ├── components/          # React components
-│   │   └── SupabaseTest.tsx # Authentication & database testing
-│   ├── lib/
-│   │   └── supabaseClient.ts # Supabase configuration
-│   ├── App.tsx             # Main application component
-│   └── App.css             # Application styles
-├── backend/
-│   ├── server.js           # Express.js API server
-│   └── package.json        # Backend dependencies
-├── supabase/
-│   ├── schema.sql          # Basic database schema
-│   └── sql-editor-integration.sql # Complete database setup
-├── public/                 # Static assets
-├── .env                    # Environment variables (local)
-├── .env.example           # Environment template
-└── package.json           # Frontend dependencies
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   React Web    │    │   Node.js API   │    │  Unity WebGL    │
+│     Frontend    │ ←→ │     Backend     │ ←→ │     Viewer      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│    Supabase     │    │     Blender     │    │   MetaQuest     │
+│    Database     │    │   STL→FBX       │    │   AR Session    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
-## 🛠️ Setup Instructions
+## 📦 Installation
 
 ### Prerequisites
-
-- **Node.js** (v16 or higher)
-- **npm** or **yarn**
-- **Supabase account** (free tier available)
-- **Git**
+- Node.js 16+
+- Unity 2022.3 LTS or later
+- Blender 4.0+ (for STL conversion)
+- MetaQuest 2/3 device (for AR features)
 
 ### 1. Clone the Repository
-
 ```bash
 git clone https://github.com/azrabano23/cad-editor-react-website.git
 cd cad-editor-react-website
 ```
 
 ### 2. Install Dependencies
-
-**Frontend dependencies:**
 ```bash
+# Install frontend dependencies
 npm install
-```
 
-**Backend dependencies:**
-```bash
+# Install backend dependencies
 cd backend
 npm install
 cd ..
 ```
 
-### 3. Set Up Supabase
-
-1. **Create a Supabase project:**
-   - Go to [supabase.com](https://supabase.com)
-   - Sign up/login and create a new project
-   - Wait for the project to be ready (2-3 minutes)
-
-2. **Get your project credentials:**
-   - Go to Settings → API
-   - Copy your `Project URL` and `anon public key`
-
-3. **Set up the database:**
-   - Go to SQL Editor in your Supabase dashboard
-   - Copy the contents of `supabase/sql-editor-integration.sql`
-   - Paste and run the SQL code to create all tables, functions, and policies
-
-### 4. Configure Environment Variables
-
-1. **Copy the environment template:**
+### 3. Environment Setup
 ```bash
+# Copy environment files
 cp .env.example .env
+cp backend/.env.example backend/.env
+
+# Configure your Supabase credentials in .env
 ```
 
-2. **Edit `.env` file with your Supabase credentials:**
-```env
-REACT_APP_SUPABASE_URL=your_supabase_project_url
-REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
+### 4. Install Blender (macOS)
+```bash
+# Option 1: Download from blender.org
+# Option 2: Install via Homebrew
+brew install --cask blender
 ```
 
-### 5. Run the Application
+## 🚀 Quick Start
 
-**Start the frontend (main application):**
+### 1. Start the Backend Server
+```bash
+cd backend
+npm start
+```
+The backend will run on `http://localhost:5000`
+
+### 2. Start the Frontend
 ```bash
 npm start
 ```
-The app will open at [http://localhost:3000](http://localhost:3000)
+The frontend will run on `http://localhost:3000`
 
-**Start the backend API server (optional):**
-```bash
-cd backend
-node server.js
+### 3. Upload and Convert
+1. Navigate to `http://localhost:3000`
+2. Upload an STL file (or other supported formats)
+3. Click "Convert to FBX"
+4. View your model in the Unity WebGL viewer
+
+## 🎮 Unity Integration
+
+### WebGL Build Setup
+1. Open the Unity project at `/ar-vr-visualization-of-data/`
+2. Install required packages:
+   - Mixed Reality Toolkit
+   - XR Interaction Toolkit
+   - Newtonsoft JSON
+3. Build for WebGL:
+   ```
+   File → Build Settings → WebGL → Build
+   ```
+4. Place build output in `/public/unity-builds/webgl/`
+
+### AR Build Setup (MetaQuest)
+1. Switch platform to Android
+2. Configure XR settings:
+   - Enable Oculus provider
+   - Set target device to Quest 2 & 3
+3. Build and deploy to MetaQuest device
+
+## 🗂️ Project Structure
+
 ```
-The API server will run at [http://localhost:5000](http://localhost:5000)
-
-## 🥽 Unity AR Integration
-
-**NEW:** HoloDraft now supports Unity integration for MetaQuest AR experiences!
-
-### What's Included
-
-- **Unity WebGL Viewer** - 3D model viewing directly in your web browser
-- **MetaQuest AR App** - Standalone AR application for immersive CAD editing
-- **Real-time Synchronization** - Live collaboration between web and AR users
-- **Hand Tracking** - Natural gesture controls for model manipulation
-- **Material Editing** - Modify colors, textures, and properties in real-time
-- **Export Tools** - Save modified models back to your project
-
-### Quick Start for Unity Integration
-
-1. **Follow the complete setup guide:**
-   ```bash
-   # Open the comprehensive Unity setup guide
-   open UNITY_SETUP.md
-   ```
-
-2. **Directory structure for Unity:**
-   ```
-   unity-integration/
-   ├── Scripts/
-   │   ├── WebGL/          # Unity WebGL scripts
-   │   ├── AR/             # MetaQuest AR scripts
-   │   └── Shared/         # Common utilities
-   ├── React/              # React integration components
-   └── README.md           # Unity-specific documentation
-   ```
-
-3. **Prerequisites for AR development:**
-   - Unity 2022.3 LTS or later
-   - MetaQuest 2 or 3 device
-   - Meta Developer Account
-   - Unity WebGL Build Support
-   - Oculus Integration package
-
-### Features in Action
-
-- **🌐 Web Viewer**: Click the "🥽 View in Unity" button on any converted CAD file
-- **🥽 AR Session**: Start AR sessions from the web app, connect with MetaQuest
-- **✋ Hand Controls**: Use pinch gestures to select and manipulate 3D models
-- **🎨 Live Editing**: Material and transform changes sync across all connected devices
-- **🤝 Collaboration**: Multiple users can edit the same model simultaneously
-
-### Development Workflow
-
-1. **Web Development**: Upload and convert CAD files in React app
-2. **Unity WebGL**: Test 3D viewing and basic interactions
-3. **AR Development**: Build and deploy to MetaQuest for immersive editing
-4. **Live Testing**: Verify real-time sync between all platforms
-
-> **📚 Full Documentation**: See `UNITY_SETUP.md` for complete setup instructions, troubleshooting, and advanced features.
-
-## 🗄️ Database Schema
-
-The application uses a comprehensive PostgreSQL schema with the following main tables:
-
-- **`profiles`** - User profiles (extends Supabase auth)
-- **`cad_projects`** - CAD project metadata
-- **`cad_elements`** - Individual drawing elements (lines, circles, etc.)
-- **`cad_layers`** - Layer organization and properties
-- **`project_collaborators`** - Project sharing and permissions
-- **`project_versions`** - Version control and history
-
-### Key Features of the Database:
-- ✅ **Row Level Security (RLS)** for secure data access
-- ✅ **Automated triggers** for timestamps and default layers
-- ✅ **Performance indexes** for fast queries
-- ✅ **Database functions** for complex operations
-- ✅ **PostGIS support** for geometric calculations
-
-## 🔧 Development
-
-### Available Scripts
-
-- **`npm start`** - Run development server
-- **`npm test`** - Run test suite
-- **`npm run build`** - Build for production
-- **`npm run eject`** - Eject from Create React App (irreversible)
-
-### Adding New Features
-
-1. **Database changes**: Update `supabase/sql-editor-integration.sql`
-2. **Frontend components**: Add to `src/components/`
-3. **API endpoints**: Extend `backend/server.js`
-4. **Styling**: Update `src/App.css`
-
-## 🚀 Deployment
-
-### Frontend Deployment (Vercel/Netlify)
-
-1. **Build the project:**
-```bash
-npm run build
+cad-editor-react-website/
+├── 📁 src/
+│   ├── 📁 components/
+│   │   ├── UnityCADViewer.tsx      # Main Unity integration component
+│   │   ├── SupabaseTest.tsx        # Database connection test
+│   │   └── ...
+│   ├── 📁 lib/
+│   │   └── supabaseClient.ts       # Supabase configuration
+│   └── App.tsx                     # Main application
+├── 📁 backend/
+│   ├── server.js                   # Express server + Blender integration
+│   ├── 📁 uploads/                 # Uploaded STL files
+│   ├── 📁 converted/               # Converted FBX files
+│   └── 📁 scripts/                 # Blender Python scripts
+├── 📁 unity-integration/
+│   ├── 📁 Scripts/
+│   │   ├── 📁 WebGL/              # Unity WebGL scripts
+│   │   ├── 📁 AR/                 # MetaQuest AR scripts
+│   │   └── 📁 React/              # React integration
+│   └── 📁 Scenes/                 # Unity scenes
+├── 📁 public/
+│   ├── 📁 unity-builds/           # Unity WebGL builds
+│   └── unity-bridge.js            # Unity ↔ React communication
+├── 📁 supabase/                   # Database schema and migrations
+└── 📄 README.md                   # This file
 ```
 
-2. **Deploy to your preferred platform:**
-   - **Vercel**: Connect your GitHub repo
-   - **Netlify**: Drag and drop the `build` folder
-   - **Other**: Use the `build` folder contents
+## 🔧 API Reference
 
-3. **Set environment variables** in your deployment platform
+### Backend Endpoints
 
-### Backend Deployment (Optional)
+#### Upload File
+```http
+POST /api/upload
+Content-Type: multipart/form-data
 
-The Express.js backend can be deployed to:
-- **Heroku**
-- **Railway**
-- **Render**
-- **DigitalOcean App Platform**
+{
+  "file": <STL_FILE>
+}
+```
+
+#### Convert to FBX
+```http
+POST /api/convert/:fileId
+Content-Type: application/json
+```
+
+#### Get Files
+```http
+GET /api/files
+```
+
+#### Health Check
+```http
+GET /api/health
+```
+
+### Unity Integration
+
+#### Load Model
+```javascript
+window.unityBridge.loadModel({
+  fileId: "file-id",
+  fileName: "model.fbx",
+  downloadUrl: "/converted/model.fbx"
+});
+```
+
+#### Transform Model
+```javascript
+window.unityBridge.transformModel({
+  fileId: "file-id",
+  position: {x: 0, y: 0, z: 0},
+  rotation: {x: 0, y: 0, z: 0},
+  scale: {x: 1, y: 1, z: 1}
+});
+```
+
+#### Start AR Session
+```javascript
+window.unityBridge.startARSession({
+  fileId: "file-id",
+  enableHandTracking: true,
+  enableCollaboration: false
+});
+```
+
+## 🎯 Usage Examples
+
+### Basic File Upload and Conversion
+```typescript
+// Upload STL file
+const handleFileUpload = async (file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  
+  const response = await fetch('/api/upload', {
+    method: 'POST',
+    body: formData
+  });
+  
+  const result = await response.json();
+  return result.file.id;
+};
+
+// Convert to FBX
+const convertToFBX = async (fileId: string) => {
+  const response = await fetch(`/api/convert/${fileId}`, {
+    method: 'POST'
+  });
+  
+  const result = await response.json();
+  return result.convertedUrl;
+};
+```
+
+### Unity AR Integration
+```csharp
+// C# script for Unity AR setup
+public class ARCADEditor : MonoBehaviour
+{
+    [Header("AR Settings")]
+    public GameObject modelContainer;
+    public Material defaultMaterial;
+    
+    void Start()
+    {
+        // Initialize AR session
+        InitializeARSession();
+    }
+    
+    private void InitializeARSession()
+    {
+        // Set up hand tracking
+        // Configure model interaction
+        // Enable real-time synchronization
+    }
+}
+```
+
+## 🛡️ Security & Performance
+
+### Security Features
+- ✅ File type validation
+- ✅ File size limits (50MB)
+- ✅ Secure file uploads
+- ✅ Supabase RLS policies
+
+### Performance Optimizations
+- ✅ Efficient STL to FBX conversion
+- ✅ Model compression for web
+- ✅ Progressive loading
+- ✅ WebGL optimization
+
+## 🧪 Testing
+
+### Run Tests
+```bash
+# Frontend tests
+npm test
+
+# Backend tests
+cd backend && npm test
+
+# Unity tests (in Unity Editor)
+```
+
+### Test AR Features
+1. Upload a test STL file
+2. Convert to FBX
+3. Open Unity viewer
+4. Test hand tracking on MetaQuest
+
+## 📱 MetaQuest Setup
+
+### Requirements
+- MetaQuest 2 or MetaQuest 3
+- Developer mode enabled
+- Unity app sideloaded
+
+### Setup Steps
+1. Enable Developer Mode in MetaQuest app
+2. Connect MetaQuest to PC via USB
+3. Build Unity app for Android
+4. Deploy using Unity or adb
+
+## 🔄 Workflow
+
+```mermaid
+graph LR
+    A[Upload STL] ---Origin Git certain laws dependably a URL defined an[xertainesynchronous law)] B[Backend Processing]
+    B ---Origin Git certain laws dependably a URL defined an[xertainesynchronous law)] C[Blender Conversion]
+    C ---Origin Git certain laws dependably a URL defined an[xertainesynchronous law)] D[FBX Output]
+    D ---Origin Git certain laws dependably a URL defined an[xertainesynchronous law)] E[Unity WebGL Viewer]
+    E ---Origin Git certain laws dependably a URL defined an[xertainesynchronous law)] F[MetaQuest AR]
+    F ---Origin Git certain laws dependably a URL defined an[xertainesynchronous law)] G[Hand Tracking]
+    G ---Origin Git certain laws dependably a URL defined an[xertainesynchronous law)] H[Model Manipulation]
+```
 
 ## 🤝 Contributing
 
+### Development Workflow
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
-## 📝 License
+### Code Standards
+- TypeScript for frontend
+- ESLint configuration
+- Prettier formatting
+- C# standards for Unity
+
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Troubleshooting
+## 🙏 Acknowledgments
 
-### Common Issues
+- **Unity Technologies** - Mixed Reality Toolkit
+- **Meta** - MetaQuest platform
+- **Blender Foundation** - 3D modeling software
+- **Supabase** - Backend as a Service
+- **React Team** - Frontend framework
 
-**"Cannot connect to Supabase"**
-- Check your `.env` file has correct Supabase URL and key
-- Ensure your Supabase project is active
-- Verify network connectivity
+## 📞 Support
 
-**"Database schema errors"**
-- Make sure you ran the complete SQL from `supabase/sql-editor-integration.sql`
-- Check the SQL Editor in Supabase dashboard for any error messages
+### Documentation
+- [Unity Setup Guide](UNITY_SETUP.md)
+- [Quick Start Guide](QUICK_START_UNITY.md)
+- [API Documentation](docs/API.md)
 
-**"Build errors"**
-- Run `npm install` to ensure all dependencies are installed
-- Check Node.js version (requires v16+)
+### Community
+- 🐛 [Report Issues](https://github.com/azrabano23/cad-editor-react-website/issues)
+- 💬 [Discussions](https://github.com/azrabano23/cad-editor-react-website/discussions)
+- 📧 [Contact](mailto:azrabano23@example.com)
+
+---
+
+**Built with ❤️ for the future of AR CAD design**
+
+[![Unity](https://img.shields.io/badge/Unity-2022.3+-black?style=flat-square&logo=unity)](https://unity.com/)
+[![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://reactjs.org/)
+[![MetaQuest](https://img.shields.io/badge/MetaQuest-2%2F3-purple?style=flat-square&logo=meta)](https://www.meta.com/quest/)
+[![Blender](https://img.shields.io/badge/Blender-4.4+-orange?style=flat-square&logo=blender)](https://www.blender.org/)
+

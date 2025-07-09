@@ -21,3 +21,34 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Backend uploads and converted files
+backend/uploads/
+backend/converted/
+backend/node_modules/
+
+# Test files
+backend/test_*.stl
+backend/test_*.py
+
+# Unity builds (too large for git)
+public/unity-builds/webgl/Build/
+
+# Backup files
+*.bak
+*_old.*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

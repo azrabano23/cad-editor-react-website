@@ -23,17 +23,30 @@ interface UnityEvent {
   data: any;
 }
 
-export const UnityWebGLWrapper: React.FC<UnityWebGLWrapperProps> = ({
-  file,
-  onUnityReady,
-  onModelLoaded,
-  onModelTransformed,
-  onARSessionStatus,
-  onError,
-  width = '100%',
-  height = '600px',
-  className = ''
-}) => {
+interface UnityWebGLWrapperRef {
+  transformModel: (position: any, rotation: any, scale: any) => void;
+  updateMaterial: (materialName: string, color: any, metallic: number, roughness: number) => void;
+  startARSession: (config?: any) => void;
+  stopARSession: () => void;
+  exportModel: (format?: string) => void;
+  loadModel: () => void;
+}
+
+export const UnityWebGLWrapper = React.forwardRef<UnityWebGLWrapperRef, UnityWebGLWrapperProps>(
+  (
+    {
+      file,
+      onUnityReady,
+      onModelLoaded,
+      onModelTransformed,
+      onARSessionStatus,
+      onError,
+      width = '100%',
+      height = '600px',
+      className = ''
+    },
+    ref
+  ) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [unityInstance, setUnityInstance] = useState<UnityInstance | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -89,44 +102,42 @@ export const UnityWebGLWrapper: React.FC<UnityWebGLWrapperProps> = ({
     if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
-    const buildUrl = '/unity-builds/webgl'; // Path to your Unity WebGL build
+    canvas.id = 'unity-canvas-' + Date.now();
     
-    // Configure Unity loader
-    const config = {
-      dataUrl: `${buildUrl}/Build.data`,
-      frameworkUrl: `${buildUrl}/Build.framework.js`,
-      codeUrl: `${buildUrl}/Build.wasm`,
-      streamingAssetsUrl: 'StreamingAssets',
-      companyName: 'HoloDraft',
-      productName: 'CAD Viewer',
-      productVersion: '1.0',
-    };
-
-    // Load Unity
-    // @ts-ignore - Unity loader will be available globally
-    createUnityInstance(canvas, config, (progress: number) => {
-      setLoadingProgress(progress * 100);
-    }).then((instance: UnityInstance) => {
-      setUnityInstance(instance);
-      
-      // Register message handlers
-      // @ts-ignore - Add to window for Unity to call
-      window.unityMessageHandler = handleUnityMessage;
-      
-    }).catch((error: any) => {
-      console.error('Unity loading error:', error);
-      setUnityStatus('error');
-      onError?.('Failed to load Unity viewer');
-    });
-
-    // Cleanup
-    return () => {
-      if (unityInstance) {
-        unityInstance.Quit();
+    // Initialize Unity using the bridge
+    if (window.unityBridge) {
+      try {
+        const instance = window.unityBridge.initialize(canvas.id);
+        setUnityInstance(instance);
+        
+        // Register message handlers
+        window.unityMessageHandler = handleUnityMessage;
+        
+        // Listen for Unity messages
+        const handleUnityMessage = (event: CustomEvent) => {
+          const { type, data } = event.detail;
+          handleUnityMessage(type, JSON.stringify(data));
+        };
+        
+        window.addEventListener('unityMessage', handleUnityMessage);
+        
+        // Cleanup
+        return () => {
+          window.removeEventListener('unityMessage', handleUnityMessage);
+          if (instance) {
+            instance.Quit();
+          }
+        };
+      } catch (error) {
+        console.error('Unity loading error:', error);
+        setUnityStatus('error');
+        onError?.('Failed to load Unity viewer');
       }
-      // @ts-ignore
-      delete window.unityMessageHandler;
-    };
+    } else {
+      console.error('Unity bridge not available');
+      setUnityStatus('error');
+      onError?.('Unity bridge not available');
+    }
   }, [handleUnityMessage]);
 
   // Load model in Unity
@@ -205,7 +216,7 @@ export const UnityWebGLWrapper: React.FC<UnityWebGLWrapperProps> = ({
   }, [unityInstance, file.id]);
 
   // Expose methods to parent component
-  React.useImperativeHandle(React.forwardRef(() => ({})), () => ({
+  React.useImperativeHandle(ref, () => ({
     transformModel,
     updateMaterial,
     startARSession,
@@ -255,7 +266,7 @@ export const UnityWebGLWrapper: React.FC<UnityWebGLWrapperProps> = ({
         }}
       />
       
-      <style jsx>{`
+      <style>{`
         .unity-webgl-wrapper {
           position: relative;
           background: #1a1a1a;
@@ -348,6 +359,6 @@ export const UnityWebGLWrapper: React.FC<UnityWebGLWrapperProps> = ({
       `}</style>
     </div>
   );
-};
+});
 
 export default UnityWebGLWrapper;
