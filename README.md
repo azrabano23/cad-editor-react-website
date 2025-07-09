@@ -16,6 +16,16 @@ HoloDraft is a revolutionary web-based CAD editor that transforms traditional 3D
 - **🎨 Material Editor**: Real-time material and texture editing
 - **📐 Transform Controls**: Precise positioning, rotation, and scaling
 
+### 🛠️ **Advanced CAD Features**
+- **📏 Measurement Tools**: Distance, angle, volume, and surface area calculations
+- **🔧 Material System**: Wireframe, transparency, highlighting, and selection modes
+- **📝 3D Annotations**: Add text labels and notes directly to models
+- **🎯 Model Interaction**: MRTK hand tracking with pinch, grab, and gesture controls
+- **🔍 Visualization Modes**: Wireframe toggle, exploded view, cross-section analysis
+- **🎛️ Interactive Toolbar**: Easy-to-use UI controls for all CAD operations
+- **📊 Model Analytics**: Automatic calculation of physical properties
+- **🎪 Advanced Rendering**: Multiple material presets and lighting configurations
+
 ### 🛠️ **Technical Stack**
 - **Frontend**: React 19 + TypeScript + Supabase
 - **Backend**: Node.js + Express + Multer
@@ -104,8 +114,59 @@ The frontend will run on `http://localhost:3000`
 
 ## 🎮 Unity Integration
 
+### Unity CAD Components
+
+#### Core CAD Scripts
+```
+Assets/Scripts/CAD/
+├── CADModelManager.cs         # Central model management system
+├── CADModel.cs               # Individual model properties and metadata
+├── CADAnnotation.cs          # 3D text annotations
+├── CADDimension.cs           # Distance measurements with visual lines
+├── CADModelInteraction.cs    # MRTK hand tracking and gestures
+├── CADMaterialManager.cs     # Material and rendering systems
+└── CADMeasurementTools.cs    # Advanced measurement tools
+```
+
+#### CAD Features Implementation
+
+**Model Management**
+- **CADModelManager**: Handles loading, selection, and manipulation of CAD models
+- **CADModel**: Stores model metadata, transformation history, and properties
+- **Visualization Modes**: Wireframe, exploded view, cross-section analysis
+
+**Measurement System**
+- **Distance Measurement**: Point-to-point distance calculation with visual indicators
+- **Angle Measurement**: Three-point angle calculation with arc visualization
+- **Volume Calculation**: Automatic bounding box volume computation
+- **Surface Area**: Real-time surface area analysis
+
+**Material System**
+- **Multiple Rendering Modes**: Default, wireframe, transparent, highlighted
+- **Selection Feedback**: Visual indication of selected models
+- **Material Presets**: Pre-configured materials for different CAD visualization needs
+
+**MRTK Integration**
+- **Hand Tracking**: Natural hand gestures for model manipulation
+- **Pinch Interactions**: Grab and move models with pinch gestures
+- **Focus Handling**: Automatic highlighting when looking at models
+- **Voice Commands**: "Select model", "Toggle wireframe", "Add annotation"
+
+#### UI Components
+```
+Assets/Scripts/UI/
+└── CADToolbar.cs             # Interactive toolbar for CAD operations
+```
+
+**Toolbar Features**
+- **Model Selection**: Click to select and highlight models
+- **Wireframe Toggle**: Switch between solid and wireframe rendering
+- **Exploded View**: Separate model parts for detailed analysis
+- **Measurement Tools**: Enable distance and angle measurement modes
+- **Reset Functions**: Clear measurements and annotations
+
 ### WebGL Build Setup
-1. Open the Unity project at `/ar-vr-visualization-of-data/`
+1. Open the Unity project at `/CAD-Editor-AR/`
 2. Install required packages:
    - Mixed Reality Toolkit
    - XR Interaction Toolkit
