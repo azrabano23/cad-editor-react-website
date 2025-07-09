@@ -158,12 +158,31 @@ app.delete('/api/files/:fileId', (req, res) => {
 // Function to convert files using Blender
 async function convertToFBX(inputPath, outputPath) {
   return new Promise((resolve) => {
-    // Path to Blender executable (you'll need to adjust this based on your system)
-    const blenderPath = process.platform === 'darwin' 
-      ? '/Applications/Blender.app/Contents/MacOS/Blender'
-      : process.platform === 'win32'
-      ? 'C:\\Program Files\\Blender Foundation\\Blender 4.4\\blender.exe'
-      : 'blender'; // Linux
+    // Enhanced path detection with better macOS support
+    let blenderPath;
+    
+    if (process.platform === 'darwin') {
+      // Check multiple possible macOS locations
+      const possiblePaths = [
+        '/Applications/Blender.app/Contents/MacOS/Blender',
+        '/Applications/Blender 4.4/Blender.app/Contents/MacOS/Blender',
+        '/Applications/Blender 4.3/Blender.app/Contents/MacOS/Blender',
+        '/opt/homebrew/bin/blender',
+        '/usr/local/bin/blender'
+      ];
+      
+      blenderPath = possiblePaths.find(path => fs.existsSync(path));
+      if (!blenderPath) {
+        console.error('❌ Blender not found in common macOS locations');
+        console.log('Please install Blender from https://www.blender.org/download/');
+        resolve(false);
+        return;
+      }
+    } else if (process.platform === 'win32') {
+      blenderPath = 'C:\\Program Files\\Blender Foundation\\Blender 4.4\\blender.exe';
+    } else {
+      blenderPath = 'blender'; // Linux
+    }
 
     const scriptPath = path.join(scriptsDir, 'convert_stl_to_fbx.py');
 
@@ -178,7 +197,8 @@ async function convertToFBX(inputPath, outputPath) {
       '--', inputPath, outputPath
     ];
 
-    console.log(`Starting conversion: ${inputPath} -> ${outputPath}`);
+    console.log(`🔧 Starting conversion: ${inputPath} -> ${outputPath}`);
+    console.log(`🔧 Using Blender: ${blenderPath}`);
     
     const blender = spawn(blenderPath, args);
 
@@ -186,27 +206,31 @@ async function convertToFBX(inputPath, outputPath) {
     let errorOutput = '';
 
     blender.stdout.on('data', (data) => {
-      output += data.toString();
+      const message = data.toString();
+      output += message;
+      console.log(`📝 Blender output: ${message.trim()}`);
     });
 
     blender.stderr.on('data', (data) => {
-      errorOutput += data.toString();
+      const message = data.toString();
+      errorOutput += message;
+      console.log(`⚠️ Blender stderr: ${message.trim()}`);
     });
 
     blender.on('close', (code) => {
-      console.log(`Blender process exited with code ${code}`);
+      console.log(`🏁 Blender process exited with code ${code}`);
       
       if (code === 0 && fs.existsSync(outputPath)) {
-        console.log('Conversion successful');
+        console.log('✅ Conversion successful');
         resolve(true);
       } else {
-        console.error('Conversion failed:', errorOutput);
+        console.error('❌ Conversion failed:', errorOutput);
         resolve(false);
       }
     });
 
     blender.on('error', (error) => {
-      console.error('Failed to start Blender:', error);
+      console.error('❌ Failed to start Blender:', error);
       resolve(false);
     });
   });

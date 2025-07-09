@@ -12,6 +12,11 @@ interface UploadedFile {
   convertedUrl?: string;
   errorMessage?: string;
   id?: string;
+  uploadPath?: string;
+  file_size?: number;
+  original_name?: string;
+  original_format?: string;
+  converted_url?: string;
 }
 
 function App() {
@@ -74,34 +79,85 @@ function App() {
       
       newFiles.push(uploadedFile);
       
-      // Simulate upload process
-      setTimeout(() => {
-        setFiles(prev => prev.map(f => 
-          f.name === file.name ? { ...f, status: 'uploaded' } : f
-        ));
-      }, 1000);
+      // Real upload process
+      uploadFile(file, uploadedFile);
     });
     
     setFiles(prev => [...prev, ...newFiles]);
   };
 
+  const uploadFile = async (file: File, uploadedFile: UploadedFile) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('http://localhost:5000/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const result = await response.json();
+      
+      setFiles(prev => prev.map(f => 
+        f.name === uploadedFile.name ? { 
+          ...f, 
+          status: 'uploaded',
+          id: result.file.id
+        } : f
+      ));
+      
+      console.log('✅ Upload successful:', result);
+    } catch (error) {
+      console.error('❌ Upload failed:', error);
+      setFiles(prev => prev.map(f => 
+        f.name === uploadedFile.name ? { 
+          ...f, 
+          status: 'error',
+          errorMessage: 'Upload failed. Please try again.'
+        } : f
+      ));
+    }
+  };
+
   const convertToFBX = async (file: UploadedFile) => {
+    if (!file.id) {
+      console.error('File ID is missing');
+      return;
+    }
+
     setFiles(prev => prev.map(f => 
       f.name === file.name ? { ...f, status: 'converting' } : f
     ));
 
     try {
-      // Simulate conversion process - In real implementation, this would call your backend
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      const response = await fetch(`http://localhost:5000/api/convert/${file.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Conversion failed');
+      }
+
+      const result = await response.json();
       
       setFiles(prev => prev.map(f => 
         f.name === file.name ? { 
           ...f, 
           status: 'converted',
-          convertedUrl: `/converted/${file.name.replace(/\.[^/.]+$/, '.fbx')}`
+          convertedUrl: result.convertedUrl
         } : f
       ));
+
+      console.log('✅ Conversion successful:', result);
     } catch (error) {
+      console.error('❌ Conversion failed:', error);
       setFiles(prev => prev.map(f => 
         f.name === file.name ? { 
           ...f, 

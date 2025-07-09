@@ -520,7 +520,7 @@ export const UnityCADViewer: React.FC<UnityCADViewerProps> = ({
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .unity-cad-viewer {
           position: fixed;
           top: 0;
