@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { spawn } = require('child_process');
+const { spawn, exec } = require('child_process');
 const cors = require('cors');
 
 const app = express();
@@ -100,11 +100,17 @@ app.post('/api/convert/:fileId', async (req, res) => {
     const success = await convertToFBX(inputPath, outputPath);
 
     if (success) {
-      res.json({
-        success: true,
-        message: 'File converted successfully',
-        convertedUrl: `/converted/${outputFileName}`,
-        outputPath: outputPath
+      triggerBuild('./build_webgl.sh', (buildSuccess) => {
+        if (buildSuccess) {
+          res.json({
+            success: true,
+            message: 'File converted and WebGL built successfully',
+            convertedUrl: `/converted/${outputFileName}`,
+            webglDeployed: true
+          });
+        } else {
+          res.status(500).json({ error: 'WebGL build failed' });
+        }
       });
     } else {
       res.status(500).json({ error: 'Conversion failed' });
@@ -152,6 +158,32 @@ app.delete('/api/files/:fileId', (req, res) => {
   } catch (error) {
     console.error('Delete error:', error);
     res.status(500).json({ error: 'Failed to delete file' });
+  }
+});
+
+// AR deployment endpoint
+app.post('/api/deploy-ar/:fileId', async (req, res) => {
+  try {
+    const { fileId } = req.params;
+    const { platform } = req.body; // 'android' for MetaQuest, 'uwp' for HoloLens
+    
+    const buildScript = platform === 'android' ? './build_ar.sh' : './build_hololens.sh';
+    
+    triggerBuild(buildScript, (buildSuccess) => {
+      if (buildSuccess) {
+        res.json({
+          success: true,
+          message: `AR package built successfully for ${platform}`,
+          platform: platform,
+          deploymentReady: true
+        });
+      } else {
+        res.status(500).json({ error: `AR build failed for ${platform}` });
+      }
+    });
+  } catch (error) {
+    console.error('AR deployment error:', error);
+    res.status(500).json({ error: 'AR deployment failed' });
   }
 });
 
@@ -233,6 +265,19 @@ async function convertToFBX(inputPath, outputPath) {
       console.error('❌ Failed to start Blender:', error);
       resolve(false);
     });
+  });
+}
+
+// Function to trigger Unity build
+function triggerBuild(scriptPath, callback) {
+  exec(scriptPath, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing ${scriptPath}: `, error);
+      callback(false);
+    } else {
+      console.log(`Output: ${stdout}`);
+      callback(true);
+    }
   });
 }
 

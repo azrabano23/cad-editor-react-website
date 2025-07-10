@@ -20,8 +20,8 @@ const WebGLViewer: React.FC<WebGLViewerProps> = ({ modelUrl, onClose }) => {
   }, [onClose]);
 
   const webglUrl = modelUrl 
-    ? `/unity-builds/webgl-fixed/index.html?model=${encodeURIComponent(modelUrl)}`
-    : '/unity-builds/webgl-fixed/index.html';
+    ? `/unity-builds/webgl-fixed/demo.html?model=${encodeURIComponent(modelUrl)}`
+    : '/unity-builds/webgl-fixed/demo.html';
 
   return (
     <div className="webgl-viewer-overlay">

@@ -11,6 +11,22 @@
 # production
 /build
 
+# Unity generated files
+/Library/
+/Temp/
+/Logs/
+/MemoryCaptures/
+/UserSettings/
+
+# Unity build artifacts
+*.log
+*.tmp
+/public/unity-builds/*/Build/
+/Assets/StreamingAssets/
+
+# Unity package manager
+/Packages/packages-lock.json
+
 # misc
 .DS_Store
 .env.local

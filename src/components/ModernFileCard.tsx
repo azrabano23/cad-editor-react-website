@@ -1,16 +1,29 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { File, CheckCircle, AlertCircle, Clock, Loader, Eye, Smartphone } from 'lucide-react';
+import { File, CheckCircle, AlertCircle, Clock, Loader, Eye, Smartphone, Zap } from 'lucide-react';
 import ModernButton from './ModernButton';
 
 interface FileData {
+  id: string;
   name: string;
   size: number;
   type: string;
-  status: 'uploading' | 'uploaded' | 'converting' | 'converted' | 'error';
+  status: 'uploading' | 'uploaded' | 'converting' | 'converted' | 'deploying-ar' | 'ar-ready' | 'error';
   originalFormat: string;
   convertedUrl?: string;
+  webglDeployed?: boolean;
+  arPlatform?: 'android' | 'uwp';
+  deploymentReady?: boolean;
   errorMessage?: string;
+  uploadedAt: Date;
+  lastModified: Date;
+  metadata?: {
+    dimensions?: string;
+    triangles?: number;
+    vertices?: number;
+    complexity?: 'Low' | 'Medium' | 'High';
+    estimatedConversionTime?: string;
+  };
 }
 
 interface ModernFileCardProps {
@@ -18,13 +31,15 @@ interface ModernFileCardProps {
   onConvert: () => void;
   onViewWebGL: () => void;
   onViewAR: () => void;
+  onDeployAR?: (platform: 'android' | 'uwp') => void;
 }
 
 const ModernFileCard: React.FC<ModernFileCardProps> = ({
   file,
   onConvert,
   onViewWebGL,
-  onViewAR
+  onViewAR,
+  onDeployAR
 }) => {
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
@@ -192,13 +207,22 @@ const ModernFileCard: React.FC<ModernFileCardProps> = ({
                 WebGL View
               </ModernButton>
               <ModernButton
+                variant="secondary"
+                size="sm"
+                onClick={() => onDeployAR && onDeployAR('android')}
+                icon={<Smartphone className="w-4 h-4" />}
+                className="flex-1 min-w-0"
+              >
+                Deploy to MetaQuest
+              </ModernButton>
+              <ModernButton
                 variant="primary"
                 size="sm"
                 onClick={onViewAR}
                 icon={<Smartphone className="w-4 h-4" />}
                 className="flex-1 min-w-0"
               >
-                AR View
+                View in AR
               </ModernButton>
             </>
           )}

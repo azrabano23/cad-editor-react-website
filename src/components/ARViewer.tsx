@@ -44,12 +44,27 @@ const ARViewer: React.FC<ARViewerProps> = ({ modelUrl, onClose }) => {
 
   const downloadForQuest = () => {
     // This would trigger download/deployment to MetaQuest
-    alert('Quest deployment feature coming soon! For now, you can sideload the APK file.');
+    const instructions = `
+AR Deployment Instructions:
+
+1. Ensure Unity 2022.3+ is installed
+2. Connect your MetaQuest device via USB, Bluetooth, or WiFi
+3. Enable Developer Mode on your MetaQuest
+4. Choose preferred connection method for deployment
+
+For HoloLens deployment:
+1. Ensure Windows SDK is installed
+2. Connect HoloLens via USB, Bluetooth, or WiFi
+3. Select UWP platform in build settings
+
+Deployment starting...`;
+    
+    alert(instructions);
   };
 
   const arUrl = modelUrl 
-    ? `/unity-builds/webgl-fixed/index.html?model=${encodeURIComponent(modelUrl)}&ar=true`
-    : '/unity-builds/webgl-fixed/index.html?ar=true';
+    ? `/unity-builds/webgl-fixed/demo.html?model=${encodeURIComponent(modelUrl)}&ar=true`
+    : '/unity-builds/webgl-fixed/demo.html?ar=true';
 
   return (
     <div className="ar-viewer-overlay">
@@ -94,9 +109,11 @@ const ARViewer: React.FC<ARViewerProps> = ({ modelUrl, onClose }) => {
             <h3>🎯 AR Instructions:</h3>
             <ul>
               <li>📱 <strong>Mobile:</strong> Point camera at flat surface</li>
-              <li>🥽 <strong>VR Headset:</strong> Use hand tracking to interact</li>
+              <li>🥽 <strong>MetaQuest:</strong> Use hand tracking to interact</li>
+              <li>🖐️ <strong>HoloLens:</strong> Air tap and gaze to select</li>
               <li>👆 <strong>Gestures:</strong> Pinch to scale, drag to move</li>
               <li>🔄 <strong>Rotate:</strong> Two-finger rotation</li>
+              <li>🛠️ <strong>Toolbar:</strong> Access editing tools in AR</li>
             </ul>
           </div>
         </div>
